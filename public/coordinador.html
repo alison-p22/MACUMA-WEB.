@@ -10,7 +10,7 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="css/style.css">
   <script>
     tailwind.config = {
       theme: {
@@ -37,7 +37,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center space-x-3">
-          <img src="/assets/escudo.png" alt="Escudo María Currea" class="h-11 w-auto bg-white rounded-full p-0.5 shadow">
+          <img src="assets/escudo.png" alt="Escudo María Currea" class="h-11 w-auto bg-white rounded-full p-0.5 shadow">
           <div>
             <h1 class="text-sm sm:text-base font-bold font-crest leading-tight">I.E.D. María Currea Manrique</h1>
             <p class="text-[10px] sm:text-xs text-amber-300">Coordinación Académica y Comité de Convivencia Escolar</p>
@@ -143,12 +143,16 @@
 
   <script>
     lucide.createIcons();
+    const API_BASE = (window.location.protocol === 'file:' || !window.location.port) ? 'http://localhost:3000' : '';
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        const repRes = await fetch('/api/reportes-materia');
+        const token = localStorage.getItem('macuma_token');
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+
+        const repRes = await fetch(`${API_BASE}/api/reportes-materia`, { headers });
         const repData = await repRes.json();
-        const sitRes = await fetch('/api/situaciones');
+        const sitRes = await fetch(`${API_BASE}/api/situaciones`, { headers });
         const sitData = await sitRes.json();
 
         // Populate reports
@@ -188,10 +192,12 @@
     });
 
     async function logout() {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      try {
+        await fetch(`${API_BASE}/api/auth/logout`, { method: 'POST' });
+      } catch (e) {}
       localStorage.removeItem('macuma_user');
       localStorage.removeItem('macuma_token');
-      window.location.href = '/index.html';
+      window.location.href = window.location.protocol === 'file:' ? 'index.html' : '/index.html';
     }
   </script>
 </body>

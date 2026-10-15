@@ -939,8 +939,10 @@ async function cambiarDocenteDemo(username) {
 
 // Logout
 async function logout() {
-  await authFetch('/api/auth/logout', { method: 'POST' });
+  try {
+    await authFetch('/api/auth/logout', { method: 'POST' });
+  } catch (e) {}
   localStorage.removeItem('macuma_user');
   localStorage.removeItem('macuma_token');
-  window.location.href = '/index.html';
+  window.location.href = window.location.protocol === 'file:' ? 'index.html' : '/index.html';
 }
