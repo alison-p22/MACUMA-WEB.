@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal del Estudiante - I.E.D. María Currea Manrique</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom Styles & Print Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            currea: {
+              wine: '#851426',
+              wineDark: '#681120',
+              wineLight: '#a61e34',
+              navy: '#0f172a',
+              navyLight: '#1e293b',
+              gold: '#d97706'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between selection:bg-currea-wine selection:text-white">
+
+  <!-- TOP NAVBAR (Screen Only) -->
+  <nav class="bg-currea-wine text-white shadow-md sticky top-0 z-40 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand -->
+        <div class="flex items-center space-x-3">
+          <img src="assets/escudo.png" alt="Escudo María Currea" class="h-11 w-auto bg-white rounded-full p-0.5 shadow">
+          <div>
+            <h1 class="text-sm sm:text-base font-bold font-crest leading-tight">I.E.D. María Currea Manrique</h1>
+            <p class="text-[10px] sm:text-xs text-rose-200">Portal Académico Estudiantil • Vigencia 2026</p>
+          </div>
+        </div>
+
+        <!-- User Info & Logout -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          <div class="hidden sm:flex flex-col text-right">
+            <span id="navStudentName" class="text-sm font-semibold leading-tight">Cargando...</span>
+            <span id="navStudentGrade" class="text-xs text-rose-200">Grado 1001</span>
+          </div>
+          <button onclick="imprimirBoletin()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-medium text-white transition border border-white/20">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Imprimir Boletín</span>
+          </button>
+          <button onclick="logout()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-950 text-xs font-medium text-rose-100 transition border border-rose-800">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Cerrar Sesión</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER (Screen View) -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow space-y-6 no-print">
+    
+    <!-- STUDENT PROFILE BANNER CARD -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-6 transition hover:shadow">
+      <div class="flex flex-col md:flex-row items-center md:items-start gap-5">
+        <!-- Avatar -->
+        <div class="relative">
+          <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-currea-wine to-currea-navy text-white flex items-center justify-center text-3xl font-bold shadow-md ring-4 ring-rose-50">
+            <span id="studentInitials">SG</span>
+          </div>
+          <div class="absolute -bottom-1 -right-1 bg-emerald-500 text-white rounded-full p-1 border-2 border-white shadow-sm" title="Matrícula Activa">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <!-- Student Meta -->
+        <div class="flex-grow text-center md:text-left space-y-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-100 text-currea-wine text-xs font-semibold uppercase mb-1">
+                <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Estudiante Activo
+              </div>
+              <h2 id="studentFullName" class="text-2xl font-bold text-slate-900 tracking-tight font-heading">
+                Cargando datos del estudiante...
+              </h2>
+            </div>
+            
+            <!-- Quick Student Switcher for Demo testing -->
+            <div class="flex items-center justify-center md:justify-end gap-2 text-xs">
+              <span class="text-slate-400">Ver como:</span>
+              <button onclick="cambiarEstudianteDemo('est-1')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 font-medium">Santiago (1001)</button>
+              <button onclick="cambiarEstudianteDemo('est-3')" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 rounded text-rose-700 font-medium">Mateo (Reportado)</button>
+              <button onclick="cambiarEstudianteDemo('est-2')" class="px-2 py-1 bg-blue-50 hover:bg-blue-100 rounded text-blue-700 font-medium">Valentina (1001)</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs text-slate-600">
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Código Escolar</span>
+              <span id="studentCode" class="font-bold text-slate-800 text-sm">EST-2026-1001</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Documento T.I.</span>
+              <span id="studentDoc" class="font-bold text-slate-800 text-sm">1023456789</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Curso y Grupo</span>
+              <span id="studentGroup" class="font-bold text-slate-800 text-sm">10° (1001)</span>
+            </div>
+            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+              <span class="text-slate-400 block text-[10px] uppercase font-semibold">Jornada / Sede</span>
+              <span id="studentJornada" class="font-bold text-slate-800 text-sm">Mañana • Sede A</span>
+            </div>
+          </div>
+          
+          <div class="text-xs text-slate-500 pt-1 flex flex-wrap items-center gap-y-1 gap-x-4">
+            <span><strong>Acudiente:</strong> <span id="studentAcudiente">Marta Rincón</span></span>
+            <span><strong>Contacto:</strong> <span id="studentContacto">311 222 3344</span></span>
+            <span><strong>Correo:</strong> <span id="studentEmail">santiago.gomez@estudiante.mariacurrea.edu.co</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY KPI STAT CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Promedio General Card -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Promedio Escolar</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="kpiPromedio" class="text-3xl font-extrabold text-slate-900">--</span>
+            <span class="text-xs text-slate-400">/ 5.0</span>
+          </div>
+          <div class="mt-2">
+            <span id="kpiDesempenoBadge" class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold badge-alto">
+              Calculando...
+            </span>
+          </div>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-rose-50 text-currea-wine flex items-center justify-center">
+          <i data-lucide="award" class="w-6 h-6"></i>
+        </div>
+      </div>
+
+      <!-- Puesto en el Salón Card -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Puesto en el Salón</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span class="text-3xl font-extrabold text-blue-700">#<span id="kpiPuesto">--</span></span>
+            <span id="kpiTotalGrupo" class="text-xs text-slate-400">de 5 en grupo</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-2">Rendimiento relativo del curso</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+          <i data-lucide="trophy" class="w-6 h-6"></i>
+        </div>
+      </div>
+
+      <!-- Asignaturas Aprobadas / Reprobadas Card -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Estado de Materias</span>
+          <div class="flex items-center gap-3 mt-1">
+            <div class="text-emerald-700 font-bold text-lg flex items-center gap-1">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span id="kpiAprobadas">0</span> Aprobadas
+            </div>
+            <div class="text-rose-600 font-bold text-lg flex items-center gap-1">
+              <i data-lucide="x-circle" class="w-4 h-4"></i>
+              <span id="kpiReprobadas">0</span> En Riesgo
+            </div>
+          </div>
+          <p id="kpiEstadoAcademico" class="text-[11px] text-slate-500 mt-2">Evaluando año lectivo</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+          <i data-lucide="book-check" class="w-6 h-6"></i>
+        </div>
+      </div>
+
+      <!-- Observaciones & Convivencia Card -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Observador y Convivencia</span>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="kpiAnotacionesCount" class="text-3xl font-extrabold text-amber-600">0</span>
+            <span class="text-xs text-slate-400">anotaciones</span>
+          </div>
+          <div class="mt-2 text-[11px] flex items-center gap-2">
+            <span id="kpiSituacionesCount" class="text-slate-600 font-medium">0 situaciones</span>
+            <span id="kpiReportesCount" class="text-rose-600 font-medium">0 reportes</span>
+          </div>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+          <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TABS NAVIGATION -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="border-b border-slate-200 px-4 sm:px-6 flex flex-wrap gap-2 sm:gap-4 tabs-nav">
+        <button onclick="cambiarPestana('notas')" id="tabBtn-notas" class="tab-btn py-3.5 px-3 border-b-2 font-bold text-sm flex items-center gap-2 border-currea-wine text-currea-wine">
+          <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+          <span>Calificaciones y Boletín</span>
+        </button>
+        <button onclick="cambiarPestana('observador')" id="tabBtn-observador" class="tab-btn py-3.5 px-3 border-b-2 font-medium text-sm flex items-center gap-2 border-transparent text-slate-500 hover:text-slate-800">
+          <i data-lucide="clipboard-pen" class="w-4 h-4"></i>
+          <span>Observador del Alumno</span>
+          <span id="tabBadgeObservador" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-600 font-bold">0</span>
+        </button>
+        <button onclick="cambiarPestana('situaciones')" id="tabBtn-situaciones" class="tab-btn py-3.5 px-3 border-b-2 font-medium text-sm flex items-center gap-2 border-transparent text-slate-500 hover:text-slate-800">
+          <i data-lucide="scale" class="w-4 h-4"></i>
+          <span>Situaciones de Convivencia</span>
+          <span id="tabBadgeSituaciones" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-600 font-bold">0</span>
+        </button>
+        <button onclick="cambiarPestana('reportes')" id="tabBtn-reportes" class="tab-btn py-3.5 px-3 border-b-2 font-medium text-sm flex items-center gap-2 border-transparent text-slate-500 hover:text-slate-800">
+          <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+          <span>Alertas y Planes de Mejoramiento</span>
+          <span id="tabBadgeReportes" class="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-rose-100 text-rose-700 font-bold">0</span>
+        </button>
+      </div>
+
+      <div class="p-5 sm:p-6">
+        
+        <!-- ========================================== -->
+        <!-- TAB 1: CALIFICACIONES Y BOLETÍN -->
+        <!-- ========================================== -->
+        <div id="tab-notas" class="tab-content space-y-6">
+          
+          <!-- Period Selector & Actions -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 filter-bar">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-bold text-slate-500 uppercase tracking-wider mr-1">Filtrar Periodo:</span>
+              <button onclick="filtrarPeriodo('todos')" id="filter-todos" class="period-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-currea-wine text-white shadow-xs">Todos los Periodos</button>
+              <button onclick="filtrarPeriodo(1)" id="filter-1" class="period-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Periodo 1</button>
+              <button onclick="filtrarPeriodo(2)" id="filter-2" class="period-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Periodo 2</button>
+              <button onclick="filtrarPeriodo(3)" id="filter-3" class="period-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Periodo 3</button>
+              <button onclick="filtrarPeriodo(4)" id="filter-4" class="period-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200">Periodo 4</button>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="imprimirBoletin()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-currea-navy hover:bg-slate-900 text-white text-xs font-semibold shadow-sm transition">
+                <i data-lucide="printer" class="w-4 h-4 text-rose-300"></i>
+                <span>Descargar / Imprimir Boletín PDF</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Official Scale Banner (1.0 to 5.0) -->
+          <div class="p-3.5 bg-gradient-to-r from-amber-50 via-rose-50 to-emerald-50 rounded-xl border border-amber-200/80 flex flex-wrap items-center justify-between gap-3 text-xs shadow-xs">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <i data-lucide="scale" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <strong class="font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+                  Escala Institucional de Calificación: 1.0 a 5.0
+                  <span class="text-[10px] font-normal normal-case px-2 py-0.2 rounded-full bg-slate-200 text-slate-700">Decreto 1290 MEN</span>
+                </strong>
+                <p class="text-[11px] text-slate-600 mt-0.5">
+                  Calificación mínima de aprobación: <strong class="text-currea-wine text-xs">3.4</strong>. Rango oficial: <strong>1.0</strong> (mínima) a <strong>5.0</strong> (máxima).
+                </p>
+              </div>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-1.5 text-[11px] font-bold">
+              <span class="px-2.5 py-1 rounded-md bg-rose-100 text-rose-800 border border-rose-200">1.0 - 3.3 (Bajo / No Aprobado)</span>
+              <span class="px-2.5 py-1 rounded-md bg-amber-100 text-amber-800 border border-amber-200">3.4 - 3.9 (Básico / Aprobado)</span>
+              <span class="px-2.5 py-1 rounded-md bg-blue-100 text-blue-800 border border-blue-200">4.0 - 4.5 (Alto)</span>
+              <span class="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-200">4.6 - 5.0 (Superior)</span>
+            </div>
+          </div>
+
+          <!-- Grades Table -->
+          <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-xs">
+            <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+              <thead class="bg-slate-50 text-slate-600 font-bold uppercase text-[11px] tracking-wider">
+                <tr>
+                  <th scope="col" class="py-3.5 px-4">Asignatura / Área</th>
+                  <th scope="col" class="py-3.5 px-3">Docente</th>
+                  <th scope="col" class="py-3.5 px-2 text-center">I.H.</th>
+                  <th scope="col" class="py-3.5 px-2 text-center col-p1">P1</th>
+                  <th scope="col" class="py-3.5 px-2 text-center col-p2">P2</th>
+                  <th scope="col" class="py-3.5 px-2 text-center col-p3">P3</th>
+                  <th scope="col" class="py-3.5 px-2 text-center col-p4">P4</th>
+                  <th scope="col" class="py-3.5 px-3 text-center bg-rose-50 text-currea-wine">Definitiva</th>
+                  <th scope="col" class="py-3.5 px-3 text-center">Desempeño</th>
+                  <th scope="col" class="py-3.5 px-4">Observaciones del Docente</th>
+                </tr>
+              </thead>
+              <tbody id="tablaNotasBody" class="divide-y divide-slate-200 bg-white">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+              <tfoot class="bg-slate-100 font-bold text-slate-800">
+                <tr>
+                  <td colspan="3" class="py-3 px-4 text-right uppercase text-xs">Promedio General por Periodo:</td>
+                  <td id="footP1" class="py-3 px-2 text-center text-sm col-p1">--</td>
+                  <td id="footP2" class="py-3 px-2 text-center text-sm col-p2">--</td>
+                  <td id="footP3" class="py-3 px-2 text-center text-sm col-p3">--</td>
+                  <td id="footP4" class="py-3 px-2 text-center text-sm col-p4">--</td>
+                  <td id="footDefinitiva" class="py-3 px-3 text-center text-base bg-rose-100 text-currea-wine font-extrabold">--</td>
+                  <td id="footDesempeno" class="py-3 px-3 text-center">--</td>
+                  <td class="py-3 px-4 text-xs text-slate-500 font-normal">Escala Institucional: Superior (4.6-5.0), Alto (4.0-4.5), Básico (3.4-3.9), Bajo (1.0-3.3)</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+          <!-- Academic Analytics Chart -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4">
+            <div class="lg:col-span-8 bg-white p-4 rounded-xl border border-slate-200">
+              <h3 class="font-bold text-slate-800 text-sm mb-3 flex items-center gap-2">
+                <i data-lucide="bar-chart-3" class="w-4 h-4 text-currea-wine"></i>
+                Desempeño Comparativo por Asignatura
+              </h3>
+              <div class="h-64 sm:h-72 w-full">
+                <canvas id="studentGradesChart"></canvas>
+              </div>
+            </div>
+
+            <!-- National Scale Reference Box -->
+            <div class="lg:col-span-4 bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+              <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <i data-lucide="info" class="w-4 h-4 text-blue-600"></i>
+                Escala Institucional de Valoración
+              </h3>
+              <div class="space-y-2 text-xs">
+                <div class="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-between">
+                  <div>
+                    <strong class="text-emerald-900 block">Desempeño Superior</strong>
+                    <span class="text-emerald-700">Supera ampliamente los logros</span>
+                  </div>
+                  <span class="font-bold text-emerald-800 text-sm">4.6 - 5.0</span>
+                </div>
+
+                <div class="p-2.5 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-between">
+                  <div>
+                    <strong class="text-blue-900 block">Desempeño Alto</strong>
+                    <span class="text-blue-700">Alcanza la totalidad de los logros</span>
+                  </div>
+                  <span class="font-bold text-blue-800 text-sm">4.0 - 4.5</span>
+                </div>
+
+                <div class="p-2.5 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-between">
+                  <div>
+                    <strong class="text-amber-900 block">Desempeño Básico</strong>
+                    <span class="text-amber-700">Aprobatorio (Nota mínima 3.4)</span>
+                  </div>
+                  <span class="font-bold text-amber-800 text-sm">3.4 - 3.9</span>
+                </div>
+
+                <div class="p-2.5 rounded-lg bg-rose-50 border border-rose-200 flex items-center justify-between">
+                  <div>
+                    <strong class="text-rose-900 block">Desempeño Bajo</strong>
+                    <span class="text-rose-700">No Aprobatorio (Alerta / Recuperación)</span>
+                  </div>
+                  <span class="font-bold text-rose-800 text-sm">1.0 - 3.3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 2: OBSERVADOR DEL ALUMNO -->
+        <!-- ========================================== -->
+        <div id="tab-observador" class="tab-content hidden space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-slate-900 text-lg">Registro del Observador del Estudiante</h3>
+              <p class="text-xs text-slate-500">Historial formativo, felicitaciones y compromisos pedagógicos suscritos.</p>
+            </div>
+          </div>
+
+          <div id="listaAnotaciones" class="space-y-4 pt-2">
+            <!-- Dynamic annotations -->
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: SITUACIONES DE CONVIVENCIA (LEY 1620) -->
+        <!-- ========================================== -->
+        <div id="tab-situaciones" class="tab-content hidden space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-slate-900 text-lg">Comité Escolar de Convivencia</h3>
+              <p class="text-xs text-slate-500">Registro de situaciones tipificadas conforme a la Ley 1620 y Manual de Convivencia.</p>
+            </div>
+          </div>
+
+          <div id="listaSituaciones" class="space-y-4 pt-2">
+            <!-- Dynamic situations -->
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 4: ALERTAS Y PLANES DE MEJORAMIENTO -->
+        <!-- ========================================== -->
+        <div id="tab-reportes" class="tab-content hidden space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-slate-900 text-lg">Alertas Tempranas y Recuperaciones</h3>
+              <p class="text-xs text-slate-500">Asignaturas reportadas con bajo rendimiento académico y planes de nivelación asignados.</p>
+            </div>
+          </div>
+
+          <div id="listaReportes" class="space-y-4 pt-2">
+            <!-- Dynamic report cards -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- OFFICIAL PRINTABLE REPORT CARD (BOLETÍN DE CALIFICACIONES PDF) -->
+  <!-- ============================================================== -->
+  <div id="boletinPrintArea" class="hidden print:block bg-white text-black p-4">
+    <!-- Institutional Header -->
+    <div class="border-b-2 border-slate-900 pb-3 mb-3">
+      <div class="flex items-center justify-between gap-4">
+        <div class="w-20 text-center">
+          <img src="assets/escudo.png" alt="Escudo IED María Currea" class="h-20 w-auto mx-auto object-contain">
+        </div>
+        <div class="flex-grow text-center space-y-0.5">
+          <h2 class="text-xs font-semibold tracking-wider uppercase text-slate-700">REPÚBLICA DE COLOMBIA • SECRETARÍA DE EDUCACIÓN DE BOGOTÁ D.C.</h2>
+          <h1 class="text-base font-extrabold uppercase font-crest tracking-wide text-black">COLEGIO INSTITUCIÓN EDUCATIVA DISTRITAL MARÍA CURREA MANRIQUE</h1>
+          <p class="text-[10px] text-slate-700">Resolución Oficial No. 1245 • DANE: 111001098765 • NIT: 860.543.210-9</p>
+          <p class="text-[10px] font-bold tracking-widest text-currea-wine uppercase">RESPETO • JUSTICIA • AUTONOMÍA</p>
+          <div class="inline-block px-3 py-0.5 bg-slate-100 border border-slate-300 rounded font-bold text-xs uppercase mt-1">
+            BOLETÍN OFICIAL DE VALORACIÓN ACADÉMICA Y FORMATIVA - AÑO 2026
+          </div>
+        </div>
+        <div class="w-20 text-center text-[9px] text-slate-500 border border-slate-300 p-1 rounded">
+          <div class="font-bold text-black">SED BOGOTÁ</div>
+          <div>Cód. Verif:</div>
+          <div id="printCodVerif" class="font-mono text-[8px] font-bold text-slate-800">MC-2026-SG</div>
+        </div>
+      </div>
+
+      <!-- Student Data Grid -->
+      <div class="mt-3 grid grid-cols-4 gap-2 text-[10px] bg-slate-50 p-2 border border-slate-300 rounded">
+        <div><strong>Estudiante:</strong> <span id="printNombre">--</span></div>
+        <div><strong>Doc. Identidad:</strong> <span id="printDoc">--</span></div>
+        <div><strong>Código:</strong> <span id="printCodigo">--</span></div>
+        <div><strong>Curso/Grupo:</strong> <span id="printGrupo">--</span></div>
+        <div><strong>Jornada:</strong> <span id="printJornada">Mañana</span></div>
+        <div><strong>Director de Grupo:</strong> <span id="printDirector">Carlos A. Morales</span></div>
+        <div><strong>Puesto en Curso:</strong> <span id="printPuesto" class="font-bold">--</span></div>
+        <div><strong>Promedio Acumulado:</strong> <span id="printPromedio" class="font-bold">--</span></div>
+      </div>
+    </div>
+
+    <!-- Official Grades Table -->
+    <div class="mb-4">
+      <table class="w-full border-collapse border border-slate-600 text-[9pt]">
+        <thead>
+          <tr class="bg-slate-200 text-slate-900 font-bold uppercase text-[8pt]">
+            <th class="border border-slate-600 p-1 text-left w-2/5">Área / Asignatura y Docente</th>
+            <th class="border border-slate-600 p-1 text-center w-10">I.H.</th>
+            <th class="border border-slate-600 p-1 text-center w-10">P1</th>
+            <th class="border border-slate-600 p-1 text-center w-10">P2</th>
+            <th class="border border-slate-600 p-1 text-center w-10">P3</th>
+            <th class="border border-slate-600 p-1 text-center w-10">P4</th>
+            <th class="border border-slate-600 p-1 text-center w-12 font-extrabold bg-slate-300">DEF</th>
+            <th class="border border-slate-600 p-1 text-center w-20">Desempeño</th>
+            <th class="border border-slate-600 p-1 text-left">Observaciones / Juicios Valorativos</th>
+          </tr>
+        </thead>
+        <tbody id="printTablaNotasBody">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Observador & Convivencia Summary in Boletín -->
+    <div class="border border-slate-400 p-2 rounded mb-4 text-[9pt] bg-slate-50">
+      <h3 class="font-bold uppercase text-[9pt] border-b border-slate-300 pb-1 mb-1">Concepto del Observador y Comportamiento Escolar:</h3>
+      <div id="printObservadorSummary" class="space-y-1 text-slate-800 text-[8pt]">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+
+    <!-- Official Scale Legend -->
+    <div class="text-[8pt] text-slate-600 border border-slate-300 p-1.5 rounded mb-6 flex justify-between">
+      <span><strong>Escala Institucional:</strong> Desempeño Superior: 4.6 a 5.0</span>
+      <span>• Desempeño Alto: 4.0 a 4.5</span>
+      <span>• Desempeño Básico: 3.4 a 3.9 (Mínima Aprobatoria)</span>
+      <span>• Desempeño Bajo: 1.0 a 3.3 (No Aprobatorio / En Riesgo)</span>
+    </div>
+
+    <!-- Signature Lines -->
+    <div class="grid grid-cols-2 gap-12 pt-8 text-center text-[9pt]">
+      <div class="border-t border-slate-800 pt-1">
+        <p class="font-bold text-slate-900">Mg. Roberto Gómez Cadavid</p>
+        <p class="text-slate-600 text-[8pt]">Rector Institucional • I.E.D. María Currea Manrique</p>
+      </div>
+      <div class="border-t border-slate-800 pt-1">
+        <p class="font-bold text-slate-900">Prof. Esperanza Manrique</p>
+        <p class="text-slate-600 text-[8pt]">Coordinación Académica y de Convivencia</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer (Screen Only) -->
+  <footer class="bg-currea-navy text-slate-400 text-xs py-4 border-t border-slate-800 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <img src="assets/escudo.png" alt="Escudo" class="h-6 w-auto filter grayscale opacity-60">
+        <span>I.E.D. María Currea Manrique • Respeto, Justicia y Autonomía</span>
+      </div>
+      <div>Plataforma de Notas v2.6 • Conexión Cifrada</div>
+    </div>
+  </footer>
+
+  <!-- Student App Logic Script -->
+  <script src="js/student.js"></script>
+</body>
+</html>

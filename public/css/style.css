@@ -1,0 +1,183 @@
+/* Custom Styling & Print Layout for I.E.D. María Currea Manrique */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --wine-900: #4a0d17;
+  --wine-800: #681120;
+  --wine-700: #851426;
+  --wine-600: #9e1a2f;
+  --wine-500: #bd233b;
+  --navy-950: #0a0f1d;
+  --navy-900: #0f172a;
+  --navy-800: #1e293b;
+  --navy-700: #334155;
+  --gold-500: #d97706;
+  --gold-400: #f59e0b;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+.font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-crest {
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.05em;
+}
+
+/* Institutional Gradients */
+.bg-currea-wine {
+  background: linear-gradient(135deg, #681120 0%, #851426 50%, #9e1a2f 100%);
+}
+
+.bg-currea-navy {
+  background: linear-gradient(135deg, #0a0f1d 0%, #0f172a 60%, #1e293b 100%);
+}
+
+.bg-currea-hero {
+  background: radial-gradient(circle at top right, rgba(133, 20, 38, 0.15) 0%, transparent 60%),
+              radial-gradient(circle at bottom left, rgba(15, 23, 42, 0.08) 0%, transparent 50%),
+              #f8fafc;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Scale Badges */
+.badge-superior {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.badge-alto {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.badge-basico {
+  background-color: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.badge-bajo {
+  background-color: #fff1f2;
+  color: #9f1239;
+  border: 1px solid #fecdd3;
+  animation: pulse-light 2s infinite;
+}
+
+@keyframes pulse-light {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+/* Table inputs */
+.grade-input {
+  transition: all 0.2s ease;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.grade-input:focus {
+  outline: none;
+  border-color: #851426;
+  box-shadow: 0 0 0 3px rgba(133, 20, 38, 0.2);
+}
+
+/* Transitions */
+.tab-content {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------------------------------------------------
+   PRINT MEDIA - BOLETÍN OFICIAL DE CALIFICACIONES
+   ------------------------------------------------------------- */
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 1cm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt;
+  }
+
+  /* Hide UI elements not part of official report card */
+  .no-print,
+  nav,
+  header,
+  footer,
+  .btn-print,
+  button,
+  .tabs-nav,
+  .filter-bar,
+  #chartContainer,
+  .non-printable {
+    display: none !important;
+  }
+
+  /* Show print container full width */
+  #boletinPrintArea {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  th, td {
+    border: 1px solid #475569 !important;
+    padding: 6px 8px !important;
+    font-size: 9pt !important;
+  }
+
+  th {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page-break {
+    page-break-after: always;
+  }
+}

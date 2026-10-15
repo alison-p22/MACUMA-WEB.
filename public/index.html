@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Académico - I.E.D. María Currea Manrique</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            currea: {
+              wine: '#851426',
+              wineDark: '#681120',
+              wineLight: '#a61e34',
+              navy: '#0f172a',
+              navyLight: '#1e293b',
+              gold: '#d97706'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between selection:bg-currea-wine selection:text-white">
+
+  <!-- Institutional Top Bar -->
+  <header class="bg-currea-wine text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <img src="assets/escudo.png" alt="Escudo I.E.D. María Currea Manrique" class="h-12 w-auto drop-shadow-md bg-white rounded-full p-0.5">
+        <div>
+          <h1 class="text-lg font-bold tracking-wide uppercase font-crest leading-tight">I.E.D. María Currea Manrique</h1>
+          <p class="text-xs text-rose-200 tracking-wider">RESPECT • JUSTICE • AUTONOMY | DANE: 111001098765</p>
+        </div>
+      </div>
+      <div class="hidden md:flex items-center space-x-6 text-xs text-rose-100 font-medium">
+        <span class="flex items-center gap-1.5"><i data-lucide="scale" class="w-4 h-4 text-amber-300"></i> Escala: 1.0 a 5.0</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4 text-emerald-300"></i> Sistema Seguro SSL</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="calendar" class="w-4 h-4 text-amber-300"></i> Año Lectivo 2026</span>
+        <span class="flex items-center gap-1.5"><i data-lucide="map-pin" class="w-4 h-4 text-rose-300"></i> Bogotá D.C.</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero & Login Section -->
+  <main class="flex-grow flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8 bg-currea-hero">
+    <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      
+      <!-- Left Column: Presentation & Features -->
+      <div class="lg:col-span-7 space-y-6 text-slate-800">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-100 text-currea-wine text-xs font-semibold uppercase tracking-wider">
+          <i data-lucide="award" class="w-4 h-4 text-currea-wine"></i>
+          Plataforma Institucional Oficial
+        </div>
+        
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight font-heading">
+          Gestión Académica y Convivencial <br>
+          <span class="text-currea-wine">María Currea Manrique</span>
+        </h2>
+        
+        <p class="text-slate-600 text-base sm:text-lg leading-relaxed">
+          Acceda de manera transparente y segura al seguimiento integral de notas, boletines escolares, observador del alumno y alertas tempranas por asignatura.
+        </p>
+
+        <!-- Feature cards grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
+              <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">Portal Estudiantes</h3>
+            <p class="text-xs text-slate-500 mt-1">Consulta de calificaciones por periodo, promedio escolar, observaciones y boletín en PDF.</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-rose-50 text-currea-wine flex items-center justify-center mb-3">
+              <i data-lucide="book-open-check" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">Portal Docentes</h3>
+            <p class="text-xs text-slate-500 mt-1">Cargue de notas, registro de observador, situaciones de convivencia y alertas por materia.</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center mb-3">
+              <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">Reportados por Materia</h3>
+            <p class="text-xs text-slate-500 mt-1">Detección oportuna de bajo rendimiento y asignación de planes de mejoramiento.</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center mb-3">
+              <i data-lucide="file-badge-2" class="w-5 h-5"></i>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm">Comité y Convivencia</h3>
+            <p class="text-xs text-slate-500 mt-1">Registro de situaciones Ley 1620 (Tipo I, II, III) y compromisos de mediación.</p>
+          </div>
+        </div>
+
+        <!-- Institutional Values Pill -->
+        <div class="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-600">
+          <span class="px-2.5 py-1 bg-white rounded-md border border-slate-200 shadow-xs flex items-center gap-1.5">
+            <i data-lucide="heart-handshake" class="w-3.5 h-3.5 text-rose-600"></i> Respeto (Respect)
+          </span>
+          <span class="px-2.5 py-1 bg-white rounded-md border border-slate-200 shadow-xs flex items-center gap-1.5">
+            <i data-lucide="scale" class="w-3.5 h-3.5 text-blue-600"></i> Justicia (Justice)
+          </span>
+          <span class="px-2.5 py-1 bg-white rounded-md border border-slate-200 shadow-xs flex items-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-600"></i> Autonomía (Autonomy)
+          </span>
+        </div>
+      </div>
+
+      <!-- Right Column: Login Card -->
+      <div class="lg:col-span-5">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+          
+          <!-- Card Header with Crest -->
+          <div class="bg-gradient-to-r from-currea-navy to-slate-900 p-6 text-white text-center relative">
+            <div class="mx-auto w-20 h-20 rounded-full bg-white p-1 shadow-lg ring-4 ring-rose-500/30 flex items-center justify-center mb-3">
+              <img src="assets/escudo.png" alt="Escudo María Currea" class="h-16 w-auto object-contain">
+            </div>
+            <h3 class="text-xl font-bold">Ingreso a la Plataforma</h3>
+            <p class="text-xs text-slate-300 mt-1">Autenticación segura para la comunidad educativa</p>
+          </div>
+
+          <!-- Form Body -->
+          <div class="p-6 sm:p-8 space-y-5">
+            <form id="loginForm" class="space-y-4">
+              <!-- Username / Document -->
+              <div>
+                <label for="username" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Usuario o Documento de Identidad
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                  </div>
+                  <input type="text" id="username" name="username" required
+                         placeholder="Ej: estudiante1 o 1023456789"
+                         class="block w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-currea-wine focus:border-currea-wine outline-none transition">
+                </div>
+              </div>
+
+              <!-- Password -->
+              <div>
+                <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Contraseña
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <i data-lucide="lock" class="w-5 h-5"></i>
+                  </div>
+                  <input type="password" id="password" name="password" required
+                         placeholder="••••••••"
+                         class="block w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 focus:bg-white focus:ring-2 focus:ring-currea-wine focus:border-currea-wine outline-none transition">
+                  <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                    <i data-lucide="eye" id="eyeIcon" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" id="submitBtn"
+                      class="w-full flex items-center justify-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-semibold text-white bg-currea-wine hover:bg-currea-wineDark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-currea-wine transition transform active:scale-95">
+                <span>Ingresar al Sistema</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </form>
+
+            <!-- Quick Demo Selectors -->
+            <div class="pt-4 border-t border-slate-200">
+              <p class="text-xs font-semibold text-slate-500 mb-2.5 text-center flex items-center justify-center gap-1.5">
+                <i data-lucide="key" class="w-3.5 h-3.5 text-amber-600"></i>
+                Accesos Rápidos de Prueba (Contraseña: 123456)
+              </p>
+              
+              <div class="space-y-1.5">
+                <!-- Estudiante 1 -->
+                <button type="button" onclick="setQuickLogin('estudiante1', '123456')"
+                        class="w-full text-left px-3 py-2 bg-blue-50/70 hover:bg-blue-100/70 border border-blue-200/60 rounded-lg text-xs font-medium text-blue-900 flex items-center justify-between transition">
+                  <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                    <strong>Santiago Gómez</strong> (Estudiante 1001 - Aprobado)
+                  </span>
+                  <span class="text-[10px] bg-blue-200 px-1.5 py-0.5 rounded text-blue-800">Cargar</span>
+                </button>
+
+                <!-- Estudiante 3 -->
+                <button type="button" onclick="setQuickLogin('estudiante3', '123456')"
+                        class="w-full text-left px-3 py-2 bg-rose-50/70 hover:bg-rose-100/70 border border-rose-200/60 rounded-lg text-xs font-medium text-rose-900 flex items-center justify-between transition">
+                  <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-rose-600"></span>
+                    <strong>Mateo Torres</strong> (Estudiante 1001 - En Riesgo/Reportado)
+                  </span>
+                  <span class="text-[10px] bg-rose-200 px-1.5 py-0.5 rounded text-rose-800">Cargar</span>
+                </button>
+
+                <!-- Docente 1 -->
+                <button type="button" onclick="setQuickLogin('docente1', '123456')"
+                        class="w-full text-left px-3 py-2 bg-purple-50/70 hover:bg-purple-100/70 border border-purple-200/60 rounded-lg text-xs font-medium text-purple-900 flex items-center justify-between transition">
+                  <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-purple-600"></span>
+                    <strong>Prof. Carlos Morales</strong> (Docente Matemáticas y Física)
+                  </span>
+                  <span class="text-[10px] bg-purple-200 px-1.5 py-0.5 rounded text-purple-800">Cargar</span>
+                </button>
+
+                <!-- Docente 2 -->
+                <button type="button" onclick="setQuickLogin('docente2', '123456')"
+                        class="w-full text-left px-3 py-2 bg-emerald-50/70 hover:bg-emerald-100/70 border border-emerald-200/60 rounded-lg text-xs font-medium text-emerald-900 flex items-center justify-between transition">
+                  <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <strong>Profa. Sandra Gómez</strong> (Docente Lengua Castellana)
+                  </span>
+                  <span class="text-[10px] bg-emerald-200 px-1.5 py-0.5 rounded text-emerald-800">Cargar</span>
+                </button>
+
+                <!-- Coordinador -->
+                <button type="button" onclick="setQuickLogin('coordinador', '123456')"
+                        class="w-full text-left px-3 py-2 bg-amber-50/70 hover:bg-amber-100/70 border border-amber-200/60 rounded-lg text-xs font-medium text-amber-900 flex items-center justify-between transition">
+                  <span class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+                    <strong>Prof. Esperanza Manrique</strong> (Coordinación General)
+                  </span>
+                  <span class="text-[10px] bg-amber-200 px-1.5 py-0.5 rounded text-amber-800">Cargar</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Card Footer -->
+          <div class="px-6 py-3 bg-slate-50 border-t border-slate-100 text-center text-xs text-slate-500">
+            ¿Problemas de acceso? Acérquese a la secretaría académica de la I.E.D.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-currea-navy text-slate-400 text-xs py-6 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-3">
+        <img src="assets/escudo.png" alt="Escudo" class="h-8 w-auto filter grayscale opacity-60">
+        <div>
+          <p class="font-bold text-slate-200">COLEGIO INSTITUCIÓN EDUCATIVA DISTRITAL MARÍA CURREA MANRIQUE</p>
+          <p class="text-[11px] text-slate-400">Resolución Oficial de la Secretaría de Educación Distrital</p>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400">
+        &copy; 2026 Plataforma Educativa Integrada. Todos los derechos reservados.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    // Toggle password visibility
+    const passwordInput = document.getElementById('password');
+    const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    togglePasswordBtn.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      eyeIcon.setAttribute('data-lucide', type === 'password' ? 'eye' : 'eye-off');
+      lucide.createIcons();
+    });
+
+    // Helper to auto-fill credentials
+    function setQuickLogin(username, password) {
+      document.getElementById('username').value = username;
+      document.getElementById('password').value = password;
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'info',
+        title: `Credenciales cargadas para ${username}`,
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+
+    // API Base URL (Supports both http://localhost:3000 and direct file:// opening)
+    const API_BASE = (window.location.protocol === 'file:' || !window.location.port) ? 'http://localhost:3000' : '';
+
+    // Check if opened via file:// protocol and show helpful banner
+    if (window.location.protocol === 'file:') {
+      const banner = document.createElement('div');
+      banner.className = 'bg-amber-500 text-white text-xs px-4 py-2.5 text-center font-semibold shadow-md flex items-center justify-center gap-2';
+      banner.innerHTML = `
+        <i data-lucide="info" class="w-4 h-4"></i>
+        <span>Estás viendo la página como archivo local (file://). Para mejor experiencia conéctate a: <a href="http://localhost:3000" class="underline font-bold text-white hover:text-amber-100">http://localhost:3000</a> (o ejecuta iniciar_sistema.bat)</span>
+      `;
+      document.body.insertBefore(banner, document.body.firstChild);
+      lucide.createIcons();
+    }
+
+    // Auto check if already logged in
+    async function checkExistingSession() {
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/me`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.user) {
+            redirectUser(data.user.role);
+          }
+        }
+      } catch (e) {
+        console.log('No active session or server offline');
+      }
+    }
+    checkExistingSession();
+
+    function redirectUser(role) {
+      const isFile = window.location.protocol === 'file:';
+      if (role === 'estudiante') {
+        window.location.href = isFile ? 'estudiante.html' : '/estudiante.html';
+      } else if (role === 'profesor') {
+        window.location.href = isFile ? 'profesor.html' : '/profesor.html';
+      } else if (role === 'coordinador') {
+        window.location.href = isFile ? 'profesor.html?modo=coordinador' : '/profesor.html?modo=coordinador';
+      }
+    }
+
+    // Login Form Submission
+    const loginForm = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) return;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Validando...`;
+      lucide.createIcons();
+
+      try {
+        const response = await fetch(`${API_BASE}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          localStorage.setItem('macuma_user', JSON.stringify(data.user));
+          localStorage.setItem('macuma_token', data.token);
+
+          Swal.fire({
+            icon: 'success',
+            title: `¡Bienvenido(a)!`,
+            text: `${data.user.nombre} (${data.user.role.toUpperCase()})`,
+            showConfirmButton: false,
+            timer: 1300
+          }).then(() => {
+            redirectUser(data.user.role);
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de Autenticación',
+            text: data.message || 'Usuario o contraseña incorrectos.',
+            confirmButtonColor: '#851426'
+          });
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de Conexión',
+          html: `
+            <p class="text-sm text-slate-700 mb-3">No se pudo contactar al servidor institucional en <b>http://localhost:3000</b>.</p>
+            <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 text-xs text-amber-900 text-left space-y-1">
+              <strong>¿Cómo solucionarlo?</strong>
+              <p>1. Ejecuta el archivo <b>iniciar_sistema.bat</b> (haz doble clic en la carpeta).</p>
+              <p>2. O abre en tu navegador: <a href="http://localhost:3000" target="_blank" class="text-blue-700 font-bold underline">http://localhost:3000</a></p>
+            </div>
+          `,
+          confirmButtonColor: '#851426'
+        });
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Ingresar al Sistema</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>

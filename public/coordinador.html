@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coordinación General - I.E.D. María Currea Manrique</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            currea: {
+              wine: '#851426',
+              wineDark: '#681120',
+              wineLight: '#a61e34',
+              navy: '#0f172a',
+              navyLight: '#1e293b',
+              gold: '#d97706'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between selection:bg-currea-wine selection:text-white">
+
+  <!-- TOP NAVBAR -->
+  <nav class="bg-currea-navy text-white shadow-md sticky top-0 z-40 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-3">
+          <img src="/assets/escudo.png" alt="Escudo María Currea" class="h-11 w-auto bg-white rounded-full p-0.5 shadow">
+          <div>
+            <h1 class="text-sm sm:text-base font-bold font-crest leading-tight">I.E.D. María Currea Manrique</h1>
+            <p class="text-[10px] sm:text-xs text-amber-300">Coordinación Académica y Comité de Convivencia Escolar</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <span class="text-xs text-slate-300">Prof. Esperanza Manrique</span>
+          <a href="/profesor.html" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-xs rounded-lg transition">Ir a Planillas Docente</a>
+          <button onclick="logout()" class="px-3 py-1.5 bg-rose-950/60 hover:bg-rose-950 text-xs rounded-lg transition border border-rose-800">Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-grow space-y-6">
+    
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <h2 class="text-2xl font-bold font-heading text-slate-900">Panel Central de Coordinación</h2>
+        <p class="text-xs text-slate-500 mt-1">Supervisión integral de alertas tempranas, rendimiento institucional y procesos de convivencia escolar.</p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="/estudiante.html" target="_blank" class="px-3.5 py-2 bg-blue-50 text-blue-800 font-semibold rounded-lg text-xs hover:bg-blue-100 transition border border-blue-200 flex items-center gap-1.5">
+          <i data-lucide="external-link" class="w-4 h-4"></i> Vista Estudiante
+        </a>
+        <a href="/profesor.html" target="_blank" class="px-3.5 py-2 bg-rose-50 text-currea-wine font-semibold rounded-lg text-xs hover:bg-rose-100 transition border border-rose-200 flex items-center gap-1.5">
+          <i data-lucide="book-open" class="w-4 h-4"></i> Vista Docente
+        </a>
+      </div>
+    </div>
+
+    <!-- Institutional KPI Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Estudiantes Matriculados</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="coordTotalEst" class="text-3xl font-extrabold text-slate-900">7</span>
+          <span class="text-xs text-slate-400">en grados 10° y 11°</span>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Cuerpo Docente</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="coordTotalDoc" class="text-3xl font-extrabold text-blue-700">4</span>
+          <span class="text-xs text-slate-400">profesores activos</span>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-xs font-bold text-rose-500 uppercase tracking-wider">Alertas Tempranas Activas</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="coordTotalRep" class="text-3xl font-extrabold text-rose-600">3</span>
+          <span class="text-xs text-slate-400">planes asignados</span>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+        <span class="text-xs font-bold text-amber-500 uppercase tracking-wider">Casos de Convivencia</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="coordTotalSit" class="text-3xl font-extrabold text-amber-600">2</span>
+          <span class="text-xs text-slate-400">situaciones Ley 1620</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Recovery and Coexistence Tables -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Academic Alerts -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-3">
+        <h3 class="font-bold text-slate-900 text-sm flex items-center justify-between">
+          <span class="flex items-center gap-2"><i data-lucide="alert-octagon" class="w-4 h-4 text-rose-600"></i> Alertas y Planes de Mejoramiento</span>
+          <span class="text-[11px] font-normal text-slate-400">Todas las materias</span>
+        </h3>
+        <div id="coordReportesList" class="space-y-2.5 max-h-96 overflow-y-auto pr-1">
+          <!-- dynamic -->
+        </div>
+      </div>
+
+      <!-- Coexistence cases -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-3">
+        <h3 class="font-bold text-slate-900 text-sm flex items-center justify-between">
+          <span class="flex items-center gap-2"><i data-lucide="scale" class="w-4 h-4 text-currea-navy"></i> Comité Escolar de Convivencia</span>
+          <span class="text-[11px] font-normal text-slate-400">Casos Ley 1620</span>
+        </h3>
+        <div id="coordSituacionesList" class="space-y-2.5 max-h-96 overflow-y-auto pr-1">
+          <!-- dynamic -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-currea-navy text-slate-400 text-xs py-4 border-t border-slate-800 text-center">
+    I.E.D. María Currea Manrique • Coordinación Académica 2026
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const repRes = await fetch('/api/reportes-materia');
+        const repData = await repRes.json();
+        const sitRes = await fetch('/api/situaciones');
+        const sitData = await sitRes.json();
+
+        // Populate reports
+        const repList = document.getElementById('coordReportesList');
+        if (repData.success && repData.data.length > 0) {
+          document.getElementById('coordTotalRep').textContent = repData.data.length;
+          repList.innerHTML = repData.data.map(r => `
+            <div class="p-3 rounded-lg border border-rose-100 bg-rose-50/40 text-xs space-y-1">
+              <div class="flex justify-between items-center">
+                <strong class="text-slate-900">${r.estudianteNombre} (${r.grado})</strong>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.estado === 'Superado' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${r.estado}</span>
+              </div>
+              <div class="text-slate-600"><strong>Materia:</strong> ${r.materiaNombre} (Nota: ${r.notaActual.toFixed(1)})</div>
+              <div class="text-slate-500 italic">"${r.motivo}"</div>
+            </div>
+          `).join('');
+        }
+
+        // Populate situations
+        const sitList = document.getElementById('coordSituacionesList');
+        if (sitData.success && sitData.data.length > 0) {
+          document.getElementById('coordTotalSit').textContent = sitData.data.length;
+          sitList.innerHTML = sitData.data.map(s => `
+            <div class="p-3 rounded-lg border border-purple-100 bg-purple-50/40 text-xs space-y-1">
+              <div class="flex justify-between items-center">
+                <strong class="text-slate-900">${s.estudianteNombre} (${s.grado})</strong>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.estado === 'Cerrada' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${s.estado}</span>
+              </div>
+              <div class="text-purple-900 font-medium">${s.tipo}: ${s.descripcion}</div>
+              <div class="text-slate-500 text-[11px]">Docente: ${s.docenteNombre} • ${s.fecha}</div>
+            </div>
+          `).join('');
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    async function logout() {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      localStorage.removeItem('macuma_user');
+      localStorage.removeItem('macuma_token');
+      window.location.href = '/index.html';
+    }
+  </script>
+</body>
+</html>
